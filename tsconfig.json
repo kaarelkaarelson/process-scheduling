@@ -19,5 +19,11 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "template"]
+  "include": [
+    "src",
+    "template",
+    "archive/algorithms/process-managment.ts",
+    "archive/components/Window.tsx",
+    "archive/components/TextField.tsx"
+  ]
 }

@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+  frontend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: frontend_c
+    ports:
+      - '3000:3000'
+    stdin_open: true
+    tty: true
