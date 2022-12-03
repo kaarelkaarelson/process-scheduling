@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "lib": ["es6", "dom", "dom.iterable", "esnext"],
     "noImplicitAny": true,
     "noImplicitThis": true,
@@ -24,6 +24,13 @@
     "template",
     "archive/algorithms/process-managment.ts",
     "archive/components/Window.tsx",
-    "archive/components/TextField.tsx"
+    "archive/components/TextField.tsx",
+    "archive/colorGenerator.ts"
+  ],
+  "plugins": [
+    {
+      "name": "typescript-styled-plugin",
+      "tags": ["styled", "css", "sty"]
+    }
   ]
 }

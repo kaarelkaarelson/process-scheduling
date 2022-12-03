@@ -18,20 +18,23 @@
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.6",
     "depcheck": "^1.4.3",
+    "distinct-colors": "^3.0.0",
+    "magic-grid": "^3.2.4",
+    "magic-grid-react": "^0.3.1",
     "queue": "^6.0.2",
     "queue-typescript": "^1.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "styled-components": "^5.3.6",
     "ts-priority-queue": "^0.1.1",
-    "typescript": "*",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
     "reacttest": "react-scripts test",
-    "test": "jest",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "browserslist": {
@@ -48,6 +51,7 @@
   },
   "devDependencies": {
     "@types/material-ui": "^0.21.12",
+    "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "eslint": "^8.0.1",
     "eslint-config-standard-with-typescript": "^23.0.0",
@@ -56,6 +60,9 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.31.10",
     "jest": "^29.1.1",
-    "ts-jest": "^29.0.3"
+    "react-app-rewired": "^2.2.1",
+    "ts-jest": "^29.0.3",
+    "typescript": "^4.9.3",
+    "typescript-styled-plugin": "^0.18.2"
   }
 }

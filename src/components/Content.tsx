@@ -8,6 +8,7 @@ import { process2DArrayToSeparatedArrays } from "../utils/arrayManipulation";
 import { firstComeFirstServe } from "../backend/algorithms/first-come-first-serve";
 import { shortestJobFirst } from "../backend/algorithms/shortest-job-first";
 import { roundRobin } from "../backend/algorithms/round-robin";
+import { Visulizer } from "./Visulizer";
 
 const borderStyle = {
   border: "1px solid grey",
@@ -63,9 +64,6 @@ interface RadioButtonProps {
   processMap: Map<number, number[][]>;
 }
 
-interface VisulizerProps {
-  history: Log[] | null;
-}
 
 const RadioButtons = ({ option, error, changeOption, changeCustomField, processMap }: RadioButtonProps) => {
   const radioStyle = {
@@ -101,32 +99,12 @@ const RadioButtons = ({ option, error, changeOption, changeCustomField, processM
             size="small"
             style={{ padding: "0 0 0 0" }}
             onBlur={(e) => changeCustomField(e.target.value)}
+            onClick={(e) => changeOption(4)}
+            // autoFocus={option === 4 ? true : false}
           />
         </div>
         {error !== "" && <div style={errorBox}>{error}</div>}
       </RadioGroup>
-    </div>
-  );
-};
-
-const Visulizer = ({ history: report }: VisulizerProps) => {
-  const meter = {
-    display: "flex",
-
-  };
-
-  const block1 = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "20px",
-    height: "50px",
-    backgroundColor: "red",
-  };
-
-  return (
-    <div style={meter}>
-      {report !== null && Array.from(report).map((process) => <div style={{ ...block1, ...borderStyle }}>{'P' + process.process.id}</div>)}
     </div>
   );
 };
@@ -177,6 +155,11 @@ const Content = () => {
         newReport = shortestJobFirst(at, bt);
         setResponse(newReport);
         break;
+      case "rr":
+        // const res = fetchData().then(data => console.log(data))
+        // console.log('fetchitud', res)
+
+        break;
       default:
         setResponse({ averageWaitTime: -1, history: null });
     }
@@ -211,28 +194,31 @@ const Content = () => {
   const flexCol: CSSProperties = {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
   };
 
   const inputBlock: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
     gridColumn: "1",
     gridRow: "1",
-    // display: "grid",
 
     padding: "10px",
   };
 
   const displayBlock: CSSProperties = {
+    justifyContent: "space-between",
     gridColumn: "2",
     gridRow: "1",
 
     padding: "10px",
   };
 
-  const outputBlock = {
+  const outputBlock: CSSProperties = {
+    // position: 'relative',
+    display: 'grid',
+    gridTemplateRows: 2,
+    justifyContent: "space-between",
     gridColumn: "1 / 3",
     gridRow: "2",
 
@@ -241,9 +227,6 @@ const Content = () => {
 
   const buttonsLayout = {
     display: "flex",
-    width: "50%",
-    minWidth: "fit-content",
-    justifyContent: "space-between",
   };
 
   return (
@@ -261,6 +244,10 @@ const Content = () => {
         <div style={buttonsLayout}>
           {buttonNames.map((name, index) => (
             <Button
+              style={{
+                marginRight: "20px",
+                height: "40px",
+              }}
               key={index}
               value={name}
               type="submit"
@@ -285,10 +272,10 @@ const Content = () => {
         />
       </div>
       <div style={{ ...outputBlock, ...flexCol, ...borderStyle }}>
-        <Visulizer history={response.history}></Visulizer>
-        <Typography>Keskmine ooteaeg: {response.averageWaitTime !== -1 && response.averageWaitTime}</Typography>
+        {response.history && <Visulizer history={response.history}></Visulizer> }
+        <Typography style={{gridRow: '2' }}>Keskmine ooteaeg: {response.averageWaitTime !== -1 && response.averageWaitTime}</Typography>
       </div>
-      <p style={{ marginTop: "30px" , display: 'none'}}>
+      <p style={{ marginTop: "30px", display: "none" }}>
         {option}, {processMap.size} | {textBox}
       </p>
     </div>
