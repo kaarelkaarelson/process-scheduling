@@ -2,10 +2,10 @@ import { round } from "../utils/numericHelper";
 import { Process, ProcessReport, Log} from "../../shared/sharedTypes";
 
 export const firstComeFirstServe = (arrivalTimes: number[], burstTimes: number[]): ProcessReport => {
-  let totalTime = arrivalTimes[0]; // what if arrivalTimes is null, at > bt - frontend validation check
-  let totalWaitTime = 0;
-  let numOfProcesses = arrivalTimes.length;
   let history: Log[] = []
+  let numOfProcesses = arrivalTimes.length;
+  let totalTime = arrivalTimes[0]; 
+  let totalWaitTime = 0;
 
   for (let i = 0; i < numOfProcesses; i++) {
     if (arrivalTimes[i] > totalTime) {
@@ -31,7 +31,7 @@ export const firstComeFirstServe = (arrivalTimes: number[], burstTimes: number[]
     totalTime += currProcess.burstTime; // Time after completing process
 
     log.endTime = totalTime;
-    log.timeRemaining! -= totalTime - totalTimeBefore;
+    log.timeRemaining -= totalTime - totalTimeBefore;
     history.push(log)
   }
 

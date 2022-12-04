@@ -1,21 +1,31 @@
 import { round } from "../utils/numericHelper";
-import { Queue } from "../data-structures/queue";
 import { Process, ProcessReport, Log } from "../../shared/sharedTypes";
+import PriorityQueue from "ts-priority-queue";
 
 export const roundRobin = (arrivalTimes: number[], burstTimes: number[]): ProcessReport => {
-  let totalTime = arrivalTimes[0];
-  let totalWaitTime = 0;
+  let history: Log[] = [];
   let numOfProcesses = arrivalTimes.length;
   let i = 0; // index for arriving processes.
-  let history: Log[] = [];
-  let quantum = 5; 
-  let finishedProcessLog: Log | null = null
+  let totalTime = arrivalTimes[0];
+  let totalWaitTime = 0;
+  let quantum = 5;
 
-  const queue = new Queue<Log>();
+  const priorityQueue = new PriorityQueue({
+    comparator: (a: Log, b: Log) => {
+      return a.endTime === null && b.endTime === null
+        ? a.process.arrivalTime - b.process.arrivalTime
+        : a.endTime === null
+        ? -1
+        : b.endTime === null
+        ? 1
+        : a.endTime - b.endTime;
+    },
+  });
 
-  while (queue.size() > 0 || i < numOfProcesses) {
-    // Add arrived processes to priority queue
-    for (let j = i; j < numOfProcesses; j++) {
+  while (priorityQueue.length > 0 || i < numOfProcesses) {
+
+    // Adding arrived processes to priority queue
+    for (let j = i; j < numOfProcesses; j++, i++) {
       if (totalTime < arrivalTimes[j]) break;
 
       const process: Process = {
@@ -31,42 +41,35 @@ export const roundRobin = (arrivalTimes: number[], burstTimes: number[]): Proces
         timeRemaining: process.burstTime,
       };
 
-      queue.enqueue(log);
-      i += 1;
-    }
-
-    if (finishedProcessLog !== null) {
-      queue.enqueue(finishedProcessLog)
-      finishedProcessLog = null;
+      priorityQueue.queue(log);
     }
 
     // Idle time
-    if (queue.size() == 0) {
+    if (priorityQueue.length == 0) {
       totalTime = arrivalTimes[i];
       continue;
     }
-    
-    const processLog = queue.dequeue();
 
-    totalWaitTime += totalTime - processLog!.endTime!;
-    let workTime = Math.min(quantum, processLog!.timeRemaining)
+    const processLog = priorityQueue.dequeue();
 
-    processLog!.startTime = totalTime;
-    processLog!.endTime = totalTime + workTime; 
-    processLog!.timeRemaining -= workTime; 
+    totalWaitTime += totalTime - (processLog.endTime ?? processLog.process.arrivalTime);
+    let workTime = Math.min(quantum, processLog!.timeRemaining);
 
-    totalTime = processLog!.endTime; // Time after completing process
+    processLog.startTime = totalTime;
+    processLog.endTime = totalTime + workTime;
+    processLog.timeRemaining -= workTime;
 
-    let copyLog = Object.assign({}, processLog) // Shallow copy to keep process object reference.
+    totalTime = processLog.endTime;
+
+    let copyLog = Object.assign({}, processLog);
     history.push(copyLog);
 
-    if (processLog!.timeRemaining == 0) continue
+    if (processLog.timeRemaining == 0) continue;
 
-    finishedProcessLog = processLog!
+    priorityQueue.queue(processLog);
   }
 
   const averageWaitTime = totalWaitTime / numOfProcesses;
 
-  console.log(history)
   return { averageWaitTime: round(averageWaitTime, 2), history: history };
 };

@@ -1,5 +1,4 @@
 import React, { useEffect, useState, Dispatch, SetStateAction, CSSProperties } from "react";
-import { selectColor } from "../utils/colorGenerator";
 import distinctColors from "distinct-colors";
 import styled from "styled-components";
 import { Log } from "../shared/sharedTypes";
@@ -12,11 +11,13 @@ interface VisulizerProps {
 
 interface RulerUnitProps {
   steps: number;
+  unitWidth: number;
   unitValue: number;
 }
 
 interface UnitProps {
   steps: number;
+  unitWidth: number;
   color: string;
 }
 
@@ -30,7 +31,7 @@ const RulerUnit = styled.div<RulerUnitProps>`
   text-align: left;
 
   height: 50px;
-  width: ${(props) => props.steps * UNIT_WIDTH + 1}px;
+  width: ${(props) => props.steps * props.unitWidth + 1}px;
 
   border-left: 1px solid;
   border-image: linear-gradient(to bottom, grey 20%, transparent 20%) 0% 100% 1;
@@ -49,7 +50,7 @@ const Unit = styled.div<UnitProps>`
   align-items: center;
 
   height: 50px;
-  width: ${(props) => props.steps * UNIT_WIDTH}px;
+  width: ${(props) => props.steps * props.unitWidth}px;
   /* width: ${(props) => props.steps * UNIT_WIDTH}%; */
 
   background-color: ${(props) => props.color};
@@ -73,18 +74,13 @@ const Visulizer = ({ history: report }: VisulizerProps) => {
       const isEmptyBlock = lastEndTime! - process.startTime! !== 0;
 
       if (isEmptyBlock) {
-        // console.log(lastEndTime, process.startTime);
         let secondsEmpty = process.endTime! - process.startTime!;
 
         console.log(secondsEmpty);
-        units.push(
-          <Unit steps={secondsEmpty} color={"white"}>
-            {" "}
-          </Unit>
-        );
+        units.push(<Unit steps={secondsEmpty} unitWidth={UNIT_WIDTH} color={"white"}></Unit>);
 
         rulerUnits.push(
-          <RulerUnit steps={secondsEmpty} unitValue={lastEndTime}>
+          <RulerUnit steps={secondsEmpty} unitWidth={UNIT_WIDTH} unitValue={lastEndTime}>
             <div>{lastEndTime}</div>
           </RulerUnit>
         );
@@ -97,21 +93,21 @@ const Visulizer = ({ history: report }: VisulizerProps) => {
       console.log(seconds);
 
       units.push(
-        <Unit steps={seconds} color={color}>
+        <Unit steps={seconds} unitWidth={UNIT_WIDTH} color={color}>
           {"P" + process.process.id}
         </Unit>
       );
 
       rulerUnits.push(
-        <RulerUnit steps={seconds} unitValue={process.startTime!}>
+        <RulerUnit steps={seconds} unitWidth={UNIT_WIDTH} unitValue={process.startTime!}>
           <div>{process.startTime}</div>
         </RulerUnit>
       );
     });
 
-    // Adding the last endtime.
+    // Adding the last endtime to the ruler.
     rulerUnits.push(
-      <RulerUnit steps={1} unitValue={lastEndTime}>
+      <RulerUnit steps={1} unitWidth={UNIT_WIDTH} unitValue={lastEndTime}>
         <div>{lastEndTime}</div>
       </RulerUnit>
     );

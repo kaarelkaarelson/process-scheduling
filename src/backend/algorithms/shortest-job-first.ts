@@ -3,11 +3,11 @@ import { Process, ProcessReport, Log } from "../../shared/sharedTypes";
 import PriorityQueue from "ts-priority-queue";
 
 export const shortestJobFirst = (arrivalTimes: number[], burstTimes: number[]): ProcessReport => {
-  let totalTime = arrivalTimes[0]; 
-  let totalWaitTime = 0;
+  let history: Log[] = [];
   let numOfProcesses = arrivalTimes.length;
   let i = 0; // index for arriving processes. 
-  let history: Log[] = [];
+  let totalTime = arrivalTimes[0]; 
+  let totalWaitTime = 0;
 
   const priorityQueue = new PriorityQueue({ comparator: (a: Process, b: Process) => a.burstTime - b.burstTime });
 
@@ -26,8 +26,8 @@ export const shortestJobFirst = (arrivalTimes: number[], burstTimes: number[]): 
       i += 1;
     }
 
-    // Idle time
     if (priorityQueue.length == 0) {
+      // Idle time
       totalTime = arrivalTimes[i];
       continue;
     }

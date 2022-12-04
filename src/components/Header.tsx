@@ -14,7 +14,7 @@ const headingStyle = {
 const headerStyle = {
   display: "flex",
   alignItems: "center",
-  height: "80px",
+  height: "70px",
 };
 
 const Header = ({ header: text }: HeaderProps) => {

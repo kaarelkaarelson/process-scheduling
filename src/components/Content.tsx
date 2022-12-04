@@ -9,6 +9,7 @@ import { firstComeFirstServe } from "../backend/algorithms/first-come-first-serv
 import { shortestJobFirst } from "../backend/algorithms/shortest-job-first";
 import { roundRobin } from "../backend/algorithms/round-robin";
 import { Visulizer } from "./Visulizer";
+import { twoLevelFirstComeFirstServe } from "../backend/algorithms/two-level-first-come-first-serve";
 
 const borderStyle = {
   border: "1px solid grey",
@@ -63,7 +64,6 @@ interface RadioButtonProps {
   error: string;
   processMap: Map<number, number[][]>;
 }
-
 
 const RadioButtons = ({ option, error, changeOption, changeCustomField, processMap }: RadioButtonProps) => {
   const radioStyle = {
@@ -156,9 +156,12 @@ const Content = () => {
         setResponse(newReport);
         break;
       case "rr":
-        // const res = fetchData().then(data => console.log(data))
-        // console.log('fetchitud', res)
-
+        newReport = roundRobin(at, bt);
+        setResponse(newReport);
+        break;
+      case "2x fcfs":
+        newReport = twoLevelFirstComeFirstServe(at, bt);
+        setResponse(newReport);
         break;
       default:
         setResponse({ averageWaitTime: -1, history: null });
@@ -216,7 +219,7 @@ const Content = () => {
 
   const outputBlock: CSSProperties = {
     // position: 'relative',
-    display: 'grid',
+    display: "grid",
     gridTemplateRows: 2,
     justifyContent: "space-between",
     gridColumn: "1 / 3",
@@ -272,8 +275,10 @@ const Content = () => {
         />
       </div>
       <div style={{ ...outputBlock, ...flexCol, ...borderStyle }}>
-        {response.history && <Visulizer history={response.history}></Visulizer> }
-        <Typography style={{gridRow: '2' }}>Keskmine ooteaeg: {response.averageWaitTime !== -1 && response.averageWaitTime}</Typography>
+        {response.history && <Visulizer history={response.history}></Visulizer>}
+        <Typography style={{ gridRow: "2" }}>
+          Keskmine ooteaeg: {response.averageWaitTime !== -1 && response.averageWaitTime}
+        </Typography>
       </div>
       <p style={{ marginTop: "30px", display: "none" }}>
         {option}, {processMap.size} | {textBox}

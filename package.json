@@ -21,6 +21,7 @@
     "distinct-colors": "^3.0.0",
     "magic-grid": "^3.2.4",
     "magic-grid-react": "^0.3.1",
+    "priority-queue-typescript": "^1.0.1",
     "queue": "^6.0.2",
     "queue-typescript": "^1.0.1",
     "react": "^18.2.0",
