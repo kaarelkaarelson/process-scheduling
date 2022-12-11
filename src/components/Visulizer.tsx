@@ -21,8 +21,7 @@ interface UnitProps {
   color: string;
 }
 
-// New Styled Components
-
+// TODO: Refactor styled component style attributs to scss module for the next version
 const RulerUnit = styled.div<RulerUnitProps>`
   position: relative;
 
@@ -62,7 +61,7 @@ const Meter = styled.div`
 `;
 
 const Visulizer = ({ history: report }: VisulizerProps) => {
-  const palette = distinctColors({ count: report.length, lightMin: 40, chromaMin: 60 });
+  const palette = distinctColors({ count: report.length,  lightMin: 30, chromaMin: 70 });
 
   const units: JSX.Element[] = [];
   const rulerUnits: JSX.Element[] = [];
@@ -70,17 +69,16 @@ const Visulizer = ({ history: report }: VisulizerProps) => {
   let lastEndTime = 0;
 
   if (report !== null) {
-    Array.from(report!).map((process) => {
+    Array.from(report!).map((process, index) => {
       const isEmptyBlock = lastEndTime! - process.startTime! !== 0;
 
       if (isEmptyBlock) {
         let secondsEmpty = process.endTime! - process.startTime!;
 
-        console.log(secondsEmpty);
-        units.push(<Unit steps={secondsEmpty} unitWidth={UNIT_WIDTH} color={"white"}></Unit>);
+        units.push(<Unit key={'empty' + index} steps={secondsEmpty} unitWidth={UNIT_WIDTH} color={"white"}></Unit>);
 
         rulerUnits.push(
-          <RulerUnit steps={secondsEmpty} unitWidth={UNIT_WIDTH} unitValue={lastEndTime}>
+          <RulerUnit key={'empty' + index} steps={secondsEmpty} unitWidth={UNIT_WIDTH} unitValue={lastEndTime}>
             <div>{lastEndTime}</div>
           </RulerUnit>
         );
@@ -90,16 +88,15 @@ const Visulizer = ({ history: report }: VisulizerProps) => {
       lastEndTime = process.endTime!;
 
       const color = palette[process.process.id - 1].css();
-      console.log(seconds);
 
       units.push(
-        <Unit steps={seconds} unitWidth={UNIT_WIDTH} color={color}>
+        <Unit key={index} steps={seconds} unitWidth={UNIT_WIDTH} color={color}>
           {"P" + process.process.id}
         </Unit>
       );
 
       rulerUnits.push(
-        <RulerUnit steps={seconds} unitWidth={UNIT_WIDTH} unitValue={process.startTime!}>
+        <RulerUnit key={index} steps={seconds} unitWidth={UNIT_WIDTH} unitValue={process.startTime!}>
           <div>{process.startTime}</div>
         </RulerUnit>
       );
@@ -107,7 +104,7 @@ const Visulizer = ({ history: report }: VisulizerProps) => {
 
     // Adding the last endtime to the ruler.
     rulerUnits.push(
-      <RulerUnit steps={1} unitWidth={UNIT_WIDTH} unitValue={lastEndTime}>
+      <RulerUnit key={report.length + 1} steps={1} unitWidth={UNIT_WIDTH} unitValue={lastEndTime}>
         <div>{lastEndTime}</div>
       </RulerUnit>
     );

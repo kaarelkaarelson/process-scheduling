@@ -1,0 +1,22 @@
+@import "../scss/variables.module.scss";
+
+.main {
+  position: relative;
+  margin-top: 100px;
+  min-height: calc(100vh - $footerHeight);
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 80%;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  background-image: url("../assets/skies.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+
+}

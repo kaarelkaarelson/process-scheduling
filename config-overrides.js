@@ -10,6 +10,18 @@ module.exports = function override(config, env) {
         }
       ]
     }
-    
+
+    module: {
+    rules: [{
+        test: /\.scss$/,
+          use: [{
+            loader: "style-loader"
+          }, {
+            loader: "css-loader" 
+          }, {
+            loader: "sass-loader"
+          }]
+    }]
+  }
     return config;
   }

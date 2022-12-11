@@ -1,0 +1,15 @@
+@import "../scss/variables.module.scss";
+
+.wrapper {
+  padding: 20px;
+}
+
+.glass {
+  backdrop-filter: blur(50px);
+}
+
+.format {
+    text-align: center;
+    padding: 5px;
+}
+
