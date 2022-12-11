@@ -1,49 +1,33 @@
+import { twoLevelFirstComeFirstServe } from './two-level-first-come-first-serve';
 import { process2DArrayToSeparatedArrays } from "../../utils/arrayManipulation";
 import { firstComeFirstServe } from "./first-come-first-serve";
 import { roundRobin } from "./round-robin";
 import { shortestJobFirst } from "./shortest-job-first";
+import processes from "../../data/processes.json";
 
-let process1: number[][] = [
-  [0, 1],
-  [1, 11],
-  [3, 3],
-  [4, 1],
-  [8, 6],
-  [14, 2],
-  [25, 1],
-];
+const data = processes;
 
-let process2: number[][] = [
-  [0, 1],
-  [1, 11],
-  [3, 3],
-  [4, 1],
-  [4, 2],
-  [8, 6],
-  [14, 2],
-  [25, 1],
-];
+const pattern1 = data[0];
+const { arrivalTimes: at1, burstTimes: bt1 } = process2DArrayToSeparatedArrays(pattern1.processes);
 
-let process3: number[][] = [
-  [0, 3],
-  [3, 4],
-  [4, 4],
-  [7, 2],
-  [9, 8],
-];
+const pattern2 = data[1];
+const { arrivalTimes: at2, burstTimes: bt2 } = process2DArrayToSeparatedArrays(pattern2.processes);
 
-let twoArrays = process2DArrayToSeparatedArrays(process1);
-let at = twoArrays.arrivalTimes;
-let bt = twoArrays.burstTimes;
+const pattern3 = data[2];
+const { arrivalTimes: at3, burstTimes: bt3 } = process2DArrayToSeparatedArrays(pattern3.processes);
 
 test(`Testing the following process with FCFS ${process}`, () => {
-  expect(firstComeFirstServe(at, bt).averageWaitTime).toBe(5.14);
+  expect(firstComeFirstServe(at1, bt1).averageWaitTime).toBe(5.14);
 });
 
-test(`Testing the following processes with Shortest Job First${process}`, () => {
-  expect(shortestJobFirst(at, bt).averageWaitTime).toBe(4.29);
+test(`Testing the following processes with Shortest Job First ${process}`, () => {
+  expect(shortestJobFirst(at1, bt1).averageWaitTime).toBe(4.29);
 });
 
-test(`Testing the following processes with Round Robin${process}`, () => {
-  expect(roundRobin(at, bt).averageWaitTime).toBe(4.29);
+test(`Testing the following processes with Round Robin ${process}`, () => {
+  expect(roundRobin(at1, bt1).averageWaitTime).toBe(4.29);
+});
+
+test(`Testing the following processes with Two Level First Come First Serve ${process}`, () => {
+  expect(twoLevelFirstComeFirstServe(at1, bt1).averageWaitTime).toBe(2.57);
 });

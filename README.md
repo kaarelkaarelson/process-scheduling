@@ -1,31 +1,23 @@
-# Getting Started with Create React App
+# Process Scheduling Algorithms
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was developed with Typescript, React and Material UI v5. 
 
-## Available Scripts
+It's part of my University Operating System course homeworks to understand how operating system works inside. There were several homeworks in that course regarding process scheduling, memory allocation and data storage management. The students were given partly developed python programm for the homeworks, however i decided to write my own web application for them. Here is the process scheduling part and the following algorightms - First Come First Serve, Shortest Job First, Round Robin and Two Way First Come First Serve. I hope you enjoy :)
 
-In the project directory, you can run:
+## Instructions
 
-### `npm start`
+To run the project, navigate to project directory and run
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### `npm install` or `yarn install`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+After installing dependencies, run:
 
-### `npm test`
+### `npm start` or `yarn start`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Runs the app in the development mode.
 
-### `npm run build`
+Open [http://localhost:3000](http://localhost:3000) to view the application in browser.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Optionally, you can run the jest test for algorithms.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
+### `npm test` or `yarn test`

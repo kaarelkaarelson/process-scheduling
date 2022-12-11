@@ -1,5 +1,5 @@
 const addDelimiter = (järjend: number[][], eraldaja: string): string => {
-  let tulemus:string = "";
+  let tulemus: string = "";
 
   järjend.map((element, index) => (tulemus += index + 1 < järjend.length ? element + eraldaja : element));
 
@@ -20,4 +20,21 @@ const processStringToArray = (processString: string): number[][] => {
   return processSequence;
 };
 
-export { addDelimiter, processStringToArray };
+const processStringToData = (processString: string): { arrivalTimes: number[]; burstTimes: number[] } => {
+  const at = [];
+  const bt = [];
+  const slices = processString.split(";");
+
+  console.log(processString, slices);
+  for (let i = 0; i < slices.length; i++) {
+    let process = slices[i].split(',');
+
+    at.push(parseInt(process[0]));
+    bt.push(parseInt(process[1]));
+  }
+
+
+  return { arrivalTimes: at, burstTimes: bt };
+};
+
+export { addDelimiter, processStringToArray, processStringToData };
