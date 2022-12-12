@@ -6,7 +6,7 @@ This project was developed with Typescript, React and Material UI v5.
 
 Process scheduling algorithms for finding average wait time and displaying Vizulization of the result - First Come First Serve, Shortest Job First, Round Robin and Two Way First Come First Serve. 
 
-Initially part of my University's Operating System course homeworks to understand how an operating system works inside. I decided to take it futher and make a web application for the material. I hope you enjoy :)
+Initially part of my University's Operating System course homeworks to understand how an operating system works inside. I decided to take it further and make a web application for the material. I hope you enjoy :)
 
 
 ## Live application
