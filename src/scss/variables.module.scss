@@ -4,13 +4,13 @@ $color: skyblue;
 $primaryColor: red;
 $transparent: rgba(0, 0, 0, 0);
 $transparentPartial: rgba(0, 0, 0, 0);
-// $transparentPartial: rgba(255, 255, 255, 0.3);
-// $transparentPartial: rgba(51, 154, 222, 0.9);
+$transparentGrey: rgba(171, 189, 206, 0.6);
 
 :export {
     color: $color;
     primary-color: $primaryColor;
     footer-height: $footerHeight;
     transparent: $transparent;
+    transparentGrey: $transparentGrey;
     transparentPartial: $transparentPartial;
 }

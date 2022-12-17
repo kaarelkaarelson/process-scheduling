@@ -13,7 +13,9 @@ import { IconButton } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import MemoryIcon from "@mui/icons-material/Memory";
+import CogMindIcon from "@mui/icons-material/Psychology";
 import HomeIcon from "@mui/icons-material/Home";
+import InfoIcon from "@mui/icons-material/Info";
 
 type Anchor = string;
 
@@ -46,21 +48,31 @@ export default function TemporaryDrawer() {
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton onClick={() => navigate("/scheduling")}>
-            <MemoryIcon />
-            <ListItemText primary={"Protsessihaldus"} />
+            <ListItemIcon>
+              <CogMindIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Process Scheduling"} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => navigate("/memory")}>
+            <ListItemIcon>
+              <MemoryIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Memory Management"} />
           </ListItemButton>
         </ListItem>
       </nav>
       <Divider />
       <List>
-        {["About"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => navigate("/about")}>
+            <ListItemIcon>
+              <InfoIcon />
+            </ListItemIcon>
+            <ListItemText primary={"About"} />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );

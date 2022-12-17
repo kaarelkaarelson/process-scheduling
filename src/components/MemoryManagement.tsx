@@ -7,9 +7,9 @@ import { process2DArrayToSeparatedArrays } from "../utils/arrayManipulation";
 import { firstComeFirstServe } from "../backend/algorithms/first-come-first-serve";
 import { shortestJobFirst } from "../backend/algorithms/shortest-job-first";
 import { roundRobin } from "../backend/algorithms/round-robin";
-import { Visulizer } from "./Visulizer";
+import { MemoryGrid } from "./MemoryGrid";
 import { twoLevelFirstComeFirstServe } from "../backend/algorithms/two-level-first-come-first-serve";
-import styles from "./Content.module.scss";
+import styles from "./ProcessScheduling.module.scss";
 import variables from "../scss/variables.module.scss";
 
 const fullOpaqueCSS = {
@@ -20,7 +20,7 @@ const partialOpaqueCSS = {
   bgcolor: variables.transparentPartial,
 };
 
-let buttonNames = ["fcfs", "sjf", "rr", "2x fcfs"];
+let buttonNames = ["first-fit", "last-fit", "worst-fit", "random-fit", "clear"];
 
 let algorithmsMap = new Map<string, (waitTimes: number[], burstTimes: number[]) => ProcessReport>([
   ["fcfs", firstComeFirstServe],
@@ -110,7 +110,7 @@ const RadioButtons = ({ option, changeOption, changeCustomField, error, processM
   );
 };
 
-const Content = () => {
+const MemoryManagement = () => {
   const theme = useTheme();
   const isMobileScreen = useMediaQuery(theme.breakpoints.down("tablet"));
 
@@ -118,7 +118,9 @@ const Content = () => {
   const [textBox, setTextBox] = useState(addDelimiter(processMap.get(1)!, ";"));
   const [customField, setCustomField] = useState("");
   const [customFieldError, setCustomFieldError] = useState("");
+  // TODO: Change the hook according to required data structure.
   const [response, setResponse] = useState<ProcessReport>({
+
     averageWaitTime: -1,
     history: null,
   });
@@ -132,51 +134,6 @@ const Content = () => {
       setCustomFieldError(getError()); // Validating in useEffect. Alternatively this can be achieved with component class state callback function.
     }
   }, [customField]);
-
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    let button = e.currentTarget;
-    let value = button.value;
-
-    let data;
-
-    if (option === 4) {
-      if (customField === "" || customFieldError !== "") {
-        // TODO: Refactor setState outside conditional statement -> Breaking the first rule of React hooks
-        setCustomFieldError(getError());
-        return;
-      }
-      data = processStringToData(customField);
-    } else {
-      let processArray = option !== 4 ? processMap.get(option)! : processStringToArray(customField);
-      data = process2DArrayToSeparatedArrays(processArray);
-    }
-
-    let at = data.arrivalTimes;
-    let bt = data.burstTimes;
-
-    let newReport: ProcessReport;
-
-    switch (value) {
-      case "fcfs":
-        newReport = firstComeFirstServe(at, bt);
-        setResponse(newReport);
-        break;
-      case "sjf":
-        newReport = shortestJobFirst(at, bt);
-        setResponse(newReport);
-        break;
-      case "rr":
-        newReport = roundRobin(at, bt);
-        setResponse(newReport);
-        break;
-      case "2x fcfs":
-        newReport = twoLevelFirstComeFirstServe(at, bt);
-        setResponse(newReport);
-        break;
-      default:
-        setResponse({ averageWaitTime: -1, history: null });
-    }
-  };
 
   const getError = (): string => {
     const error =
@@ -193,12 +150,50 @@ const Content = () => {
     return error;
   };
 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    let button = e.currentTarget;
+    let value = button.value;
+
+    // TODO: Clear the memory grid
+    if (value === 'clear') {
+
+        return
+    }
+
+    let data;
+
+    if (option === 4) {
+      if (customField === "" || customFieldError !== "") {
+        // TODO: Refactor setState outside conditional statement -> Breaking the first rule of React hooks
+        setCustomFieldError(getError());
+        return;
+      }
+      data = processStringToData(customField);
+    } else {
+      let processArray = option !== 4 ? processMap.get(option)! : processStringToArray(customField);
+      data = process2DArrayToSeparatedArrays(processArray);
+    }
+
+    switch (value) {
+      case "first-fit":
+        break;
+      case "last-fit":
+        break;
+      case "worst-fit":
+        break;
+      case "random-fit":
+        break;
+      default:
+        setResponse({ averageWaitTime: -1, history: null });
+    }
+  };
+
   return (
     <Paper className={styles.wrapper} elevation={5} sx={fullOpaqueCSS}>
       <Grid container spacing={2} alignItems="stretch">
         <Grid item mobile={12} tablet={8}>
           <Paper className={`${styles.inputBlock} ${styles.glass} `} sx={partialOpaqueCSS}>
-            <Typography>Vali või sisesta järjend (kujul 0,1;1,11;3,3;4,1;8,6;14,2;25,1)</Typography>
+            <Typography>Choose or enter a 10-element array (with the following format: 0,1;1,11;3,3;4,1;8,6;14,2;25,1)</Typography>
             <RadioButtons
               option={option}
               changeOption={setOption}
@@ -206,13 +201,14 @@ const Content = () => {
               error={customFieldError}
               processMap={processMap}
             ></RadioButtons>
-            <Typography>Algoritmi käivitamiseks klõpsa nupule</Typography>
+            <Typography>Click the button to run the algorithm</Typography>
             <div className={styles.buttonsLayout}>
               {buttonNames.map((name, index) => (
                 <Button
                   style={{
                     marginRight: "20px",
                     height: "40px",
+                    fontSize: '15px',
                   }}
                   key={index}
                   color="primary"
@@ -228,7 +224,7 @@ const Content = () => {
         </Grid>
         <Grid item mobile={12} tablet={4}>
           <Paper className={`${styles.displayBlock} ${styles.flexCol} ${styles.glass} `} sx={partialOpaqueCSS}>
-            <Typography>Käsil olevad protsessid:</Typography>
+            <Typography>Current memory processes:</Typography>
             <TextField
               disabled
               id="multiline"
@@ -242,10 +238,7 @@ const Content = () => {
         </Grid>
         <Grid item mobile={12} tablet={12}>
           <Paper className={`${styles.outputBlock} ${styles.flexCol} ${styles.glass} `} sx={partialOpaqueCSS}>
-            {response.history && <Visulizer history={response.history}></Visulizer>}
-            <Typography style={{ gridRow: "2" }}>
-              Keskmine ooteaeg: {response.averageWaitTime !== -1 && response.averageWaitTime + " sek"}
-            </Typography>
+            <MemoryGrid />
           </Paper>
         </Grid>
       </Grid>
@@ -253,4 +246,4 @@ const Content = () => {
   );
 };
 
-export { Content };
+export { MemoryManagement };
